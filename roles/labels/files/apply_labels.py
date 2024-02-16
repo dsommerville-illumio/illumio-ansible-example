@@ -30,9 +30,6 @@ def run():
 
     pce = connect_to_pce()
 
-    # ansible outputs strings with single quotes, convert to " for JSON marshalling
-    # maybe some combination of | to_json / | quote can avoid needing this
-    # label_hrefs = json.loads(args.labels.replace("'", '"'))
     label_hrefs = json.loads(args.labels)
     workload = pce.workloads.get_by_name(args.workload)
     if set(label_hrefs) ^ set(l.href for l in workload.labels):
