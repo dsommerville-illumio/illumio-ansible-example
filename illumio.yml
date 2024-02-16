@@ -1,0 +1,12 @@
+---
+- hosts: workloads
+  connection: local
+  gather_facts: no
+  roles:
+  - labels
+
+- hosts: pce
+  connection: local
+  gather_facts: no
+  roles:
+  - rulesets

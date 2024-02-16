@@ -1,0 +1,8 @@
+---
+labels:
+  - key: role
+    value: Database
+  - key: env
+    value: Test
+  - key: loc
+    value: Rackspace

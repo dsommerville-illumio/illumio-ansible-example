@@ -1,0 +1,8 @@
+---
+labels:
+  - key: role
+    value: Single Node App
+  - key: env
+    value: Test
+  - key: loc
+    value: Rackspace

@@ -1,0 +1,41 @@
+---
+- name: create ruleset scope labels
+  illumio.core.label:
+    key: "{{ item['key'] }}"
+    value: "{{ item['value'] }}"
+    state: present
+  loop: '{{ rulesets | json_query("[*].scope[]") }}'
+  register: scope_labels_result
+
+- name: create rule consumer labels
+  illumio.core.label:
+    key: "{{ item['key'] }}"
+    value: "{{ item['value'] }}"
+    state: present
+  loop: '{{ rulesets | json_query("[*].rules[*].consumers[][]") }}'
+  register: rule_consumer_labels_result
+
+- name: create rule provider labels
+  illumio.core.label:
+    key: "{{ item['key'] }}"
+    value: "{{ item['value'] }}"
+    state: present
+  loop: '{{ rulesets | json_query("[*].rules[*].providers[][]") }}'
+  register: rule_provider_labels_result
+
+- set_fact:
+    scope_labels: '{{ scope_labels_result | json_query("results[*].label[]") }}'
+
+- set_fact:
+    consumer_labels: '{{ rule_consumer_labels_result | json_query("results[*].label[]") }}'
+
+- set_fact:
+    provider_labels: '{{ rule_provider_labels_result | json_query("results[*].label[]") }}'
+
+- set_fact:
+    created_labels: '{{ scope_labels + consumer_labels + provider_labels }}'
+
+- name: apply rulesets
+  ansible.builtin.script: apply_rulesets.py '{{ rulesets | to_json }}' '{{ created_labels | to_json }}'
+  args:
+    executable: python3

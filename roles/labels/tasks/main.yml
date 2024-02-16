@@ -1,0 +1,13 @@
+---
+- name: create labels
+  illumio.core.label:
+    key: "{{ item['key'] }}"
+    value: "{{ item['value'] }}"
+    state: present
+  loop: "{{ labels }}"
+  register: result
+
+- name: apply labels
+  ansible.builtin.script: apply_labels.py {{ ansible_host }} '{{ result | json_query("results[*].label.href") | to_json }}'
+  args:
+    executable: python3

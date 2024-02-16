@@ -1,0 +1,20 @@
+---
+# for the example, simplify to a single ruleset scope
+# and basic label-to-label rule definition
+rulesets:
+  - name: RS-AnsibleTest
+    scope:
+      - key: env
+        value: Test
+      - key: loc
+        value: Rackspace
+    rules:
+      - consumers:
+          - key: role
+            value: Single Node App
+        providers:
+          - key: role
+            value: Database
+        services:
+          - port: 3306
+            proto: 6
